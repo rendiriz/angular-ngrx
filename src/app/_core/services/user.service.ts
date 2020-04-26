@@ -22,4 +22,24 @@ export class UserService {
   getItems(params: string = ''): Observable<any> {
     return this.http.get<any>(this.apiUrl + params, this.httpOptions);
   }
+
+  getItem(id: number, params: string = ''): Observable<any> {
+    return this.http.get<any>(this.apiUrl + '/' + id + params);
+  }
+
+  createItem(item): Observable<any> {
+    return this.http.post<any>(
+      this.apiUrl,
+      JSON.stringify(item),
+      this.httpOptions
+    );
+  }
+
+  updateItem(id: number, item): Observable<any> {
+    return this.http.put<any>(
+      this.apiUrl + '/' + id,
+      JSON.stringify(item),
+      this.httpOptions
+    );
+  }
 }

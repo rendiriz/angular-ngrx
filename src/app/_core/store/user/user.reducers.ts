@@ -8,6 +8,10 @@ export const ENTITY_FEATURE_KEY = 'user';
 
 export interface State extends EntityState<UserData> {
   isLoadingList: boolean;
+  isLoadingCreate: boolean;
+  isLoadingRead: boolean;
+  isLoadingUpdate: boolean;
+  isLoadingDelete: boolean;
   error?: Error | any;
 }
 
@@ -23,6 +27,10 @@ export interface EntityPartialState {
 
 export const initialState: State = adapter.getInitialState({
   isLoadingList: true,
+  isLoadingCreate: true,
+  isLoadingRead: true,
+  isLoadingUpdate: true,
+  isLoadingDelete: true,
   error: null
 });
 
@@ -51,6 +59,42 @@ const reducer = createReducer(
       };
     }
   ),
+  on(fromUserActions.loadUser, state => {
+    return {
+      ...state,
+      isLoadingRead: true
+    };
+  }),
+  on(fromUserActions.loadUserSuccess, (state, { data }) => {
+    return adapter.addOne(data, {
+      ...state,
+      isLoadingRead: false
+    });
+  }),
+  on(fromUserActions.loadUserFailure, (state, { error }) => {
+    return {
+      ...state,
+      error
+    };
+  }),
+  on(fromUserActions.createUser, state => {
+    return {
+      ...state,
+      isLoadingCreate: true
+    };
+  }),
+  on(fromUserActions.createUserSuccess, (state, { data }) => {
+    return adapter.addOne(data, {
+      ...state,
+      isLoadingCreate: false
+    });
+  }),
+  on(fromUserActions.createUserFailure, (state, { error }) => {
+    return {
+      ...state,
+      error
+    };
+  }),
   on(fromUserActions.clearUser, state => {
     return adapter.removeAll({ ...state });
   })

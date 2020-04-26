@@ -28,6 +28,51 @@ export class UserEffects {
     )
   );
 
+  loadUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fromUserActions.loadUser),
+      switchMap(action =>
+        this.userService.getItem(action.id, action.params).pipe(
+          map((res: any) => {
+            return fromUserActions.loadUserSuccess({
+              data: res.data
+            });
+          }),
+          catchError(error => {
+            return of(
+              fromUserActions.loadUserFailure({
+                error
+              })
+            );
+          })
+        )
+      )
+    )
+  );
+
+  createUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fromUserActions.createUser),
+      switchMap(action => {
+        return this.userService.createItem(action.create).pipe(
+          switchMap(res => [
+            fromUserActions.createUserSuccess({
+              data: res.data
+            })
+          ]),
+          catchError(error => {
+            return of(
+              fromUserActions.createUserFailure({
+                error
+              }),
+              undo(action)
+            );
+          })
+        );
+      })
+    )
+  );
+
   constructor(
     private actions$: Actions,
     private userService: UserService

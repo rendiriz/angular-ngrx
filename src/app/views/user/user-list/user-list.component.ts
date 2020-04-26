@@ -39,9 +39,13 @@ export class UserListComponent implements OnInit {
   }
 
   ngOnInit() {
-    const params = '';
+    const params = '?_sort=id:desc';
     this.store.dispatch(
       fromUserActions.loadUsers({ params })
     );
+  }
+
+  onDelete(id: number) {
+
   }
 }

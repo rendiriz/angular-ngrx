@@ -35,5 +35,25 @@ export const selectIsLoadingList = createSelector(
   state => state.isLoadingList
 );
 
+export const selectIsLoadingCreate = createSelector(
+  getState,
+  state => state.isLoadingCreate
+);
+
+export const selectIsLoadingRead = createSelector(
+  getState,
+  state => state.isLoadingRead
+);
+
+export const selectIsLoadingUpdate = createSelector(
+  getState,
+  state => state.isLoadingUpdate
+);
+
+export const selectIsLoadingDelete = createSelector(
+  getState,
+  state => state.isLoadingDelete
+);
+
 // select error
 export const selectError = createSelector(getState, state => state.error);

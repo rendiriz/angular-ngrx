@@ -1,22 +1,37 @@
 <main role="main"
       class="container">
   <div class="row my-4">
+    <div class="col-md-12 mb-3">
+      <a class="btn btn-primary" [routerLink]="['/add']">
+        Add
+      </a>
+    </div>
     <div class="col-md-12">
       <table class="table table-bordered">
         <thead class="thead-dark">
           <tr>
-            <th scope="col">#</th>
-            <th scope="col">First Name</th>
-            <th scope="col">Last Name</th>
-            <th scope="col">Email</th>
+            <th width="5%">#</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th width="30%">Email</th>
+            <th width="15%"></th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let row of data$ | async">
-            <th scope="row">{{ row.id }}</th>
+            <th>{{ row.id }}</th>
             <td>{{ row.first_name }}</td>
             <td>{{ row.last_name }}</td>
             <td>{{ row.email }}</td>
+            <td class="text-center">
+              <a class="btn btn-warning"
+                [routerLink]="['/edit/', row.id]">
+                Edit
+              </a>
+              <a class="btn btn-danger ml-2" (click)="onDelete(row.id)">
+                Delete
+              </a>
+            </td>
           </tr>
         </tbody>
       </table>
