@@ -16,6 +16,9 @@
       "dom"
     ],
     "paths": {
+      "@models": ["src/app/_core/models/index.ts"],
+      "@services": ["src/app/_core/services/index.ts"],
+      "@store/*": ["src/app/_core/store/*"],
       "@templates/*": ["src/app/_core/templates/*"]
     }
   },

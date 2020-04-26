@@ -1,0 +1,25 @@
+<main role="main"
+      class="container">
+  <div class="row my-4">
+    <div class="col-md-12">
+      <table class="table table-bordered">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of data$ | async">
+            <th scope="row">{{ row.id }}</th>
+            <td>{{ row.first_name }}</td>
+            <td>{{ row.last_name }}</td>
+            <td>{{ row.email }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main>

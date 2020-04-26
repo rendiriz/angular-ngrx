@@ -14,14 +14,9 @@ export const AppRoutingModule: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'test',
-        pathMatch: 'full'
-      },
-      {
-        path: 'test',
         loadChildren: () =>
-          import('./views/test/test.module').then(
-            m => m.TestModule
+          import('./views/user/user.module').then(
+            m => m.UserModule
           )
       }
     ]

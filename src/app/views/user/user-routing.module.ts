@@ -7,8 +7,8 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        // loadChildren: () =>
-        //   import('./login/login.module').then(m => m.LoginModule)
+        loadChildren: () =>
+          import('./user-list/user-list.module').then(m => m.UserListModule)
       }
     ]
   }
@@ -18,4 +18,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class TestRoutingModule {}
+export class UserRoutingModule {}
