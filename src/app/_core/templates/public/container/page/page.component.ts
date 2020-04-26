@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-root',
+  selector: 'app-public-page',
   template: `
+    <app-public-navbar></app-public-navbar>
     <router-outlet></router-outlet>
   `
 })
-export class AppComponent {
-  title = 'angular-ngrx';
-}
+export class PageComponent {}
