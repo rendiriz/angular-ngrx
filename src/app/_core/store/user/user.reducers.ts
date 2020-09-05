@@ -66,7 +66,7 @@ const reducer = createReducer(
     };
   }),
   on(fromUserActions.loadUserSuccess, (state, { data }) => {
-    return adapter.addOne(data, {
+    return adapter.setOne(data, {
       ...state,
       isLoadingRead: false
     });
@@ -90,6 +90,27 @@ const reducer = createReducer(
     });
   }),
   on(fromUserActions.createUserFailure, (state, { error }) => {
+    return {
+      ...state,
+      error
+    };
+  }),
+  on(fromUserActions.updateUser, state => {
+    return {
+      ...state,
+      isLoadingUpdate: true
+    };
+  }),
+  on(fromUserActions.updateUserSuccess, (state, { data }) => {
+    return adapter.updateOne(
+      { id: data.id, changes: data },
+      {
+        ...state,
+        isLoadingUpdate: false
+      }
+    );
+  }),
+  on(fromUserActions.updateUserFailure, (state, { error }) => {
     return {
       ...state,
       error

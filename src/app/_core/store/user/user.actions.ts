@@ -11,6 +11,9 @@ export enum UserActionTypes {
   CreateUser = '[USER] Create User',
   CreateUserSuccess = '[USER] Create User Success',
   CreateUserFailure = '[USER] Create User Failure',
+  UpdateUser = '[USER] Update User',
+  UpdateUserSuccess = '[USER] Update User Success',
+  UpdateUserFailure = '[USER] Update User Failure',
   ClearUser = '[USER] Clear Users'
 }
 
@@ -59,6 +62,21 @@ export const createUserFailure = createAction(
   props<{ error: Error | any }>()
 );
 
+export const updateUser = createAction(
+  UserActionTypes.UpdateUser,
+  props<{ id: number; update: any; }>()
+);
+
+export const updateUserSuccess = createAction(
+  UserActionTypes.UpdateUserSuccess,
+  props<{ data: UserData }>()
+);
+
+export const updateUserFailure = createAction(
+  UserActionTypes.UpdateUserFailure,
+  props<{ error: Error | any }>()
+);
+
 export const clearUser = createAction(
   UserActionTypes.ClearUser
 );
@@ -73,5 +91,8 @@ export const fromUserActions = {
   createUser,
   createUserSuccess,
   createUserFailure,
+  updateUser,
+  updateUserSuccess,
+  updateUserFailure,
   clearUser
 };

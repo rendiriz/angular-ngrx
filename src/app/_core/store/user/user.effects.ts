@@ -73,6 +73,29 @@ export class UserEffects {
     )
   );
 
+  updateUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fromUserActions.updateUser),
+      switchMap(action =>
+        this.userService.updateItem(action.id, action.update).pipe(
+          map((res: any) => {
+            return fromUserActions.updateUserSuccess({
+              data: res.data
+            });
+          }),
+          catchError(error => {
+            return of(
+              fromUserActions.updateUserFailure({
+                error
+              }),
+              undo(action)
+            );
+          })
+        )
+      )
+    )
+  );
+
   constructor(
     private actions$: Actions,
     private userService: UserService

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
@@ -9,30 +9,35 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserData } from '@models';
 
 import {
-  selectUsers,
-  selectIsLoadingCreate,
+  selectUser,
+  selectIsLoadingRead,
+  selectIsLoadingUpdate,
   selectError
 } from '@store/user/user.selectors';
 import { fromUserActions } from '@store/user/user.actions';
 
 @Component({
-  selector: 'app-user-add',
-  templateUrl: './user-add.component.html',
-  styleUrls: ['./user-add.component.css']
+  selector: 'app-user-edit',
+  templateUrl: './user-edit.component.html',
+  styleUrls: ['./user-edit.component.css']
 })
-export class UserAddComponent implements OnInit {
+export class UserEditComponent implements OnInit {
 
   myForm: FormGroup;
+  id: number;
 
   data$: Observable<UserData[]>;
-  isLoadingCreate$: Observable<boolean>;
+  isLoadingRead$: Observable<boolean>;
+  isLoadingUpdate$: Observable<boolean>;
   error$: Observable<string>;
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private actions$: Actions,
     private store: Store<any>
   ) {
+    this.id = this.route.snapshot.params['id'];
   }
 
   ngOnInit() {
@@ -50,30 +55,64 @@ export class UserAddComponent implements OnInit {
         Validators.maxLength(100)
       ]),
     });
+
+    this.getData();
   }
 
   get f() {
     return this.myForm.controls;
   }
 
+  getData() {
+    const params = '';
+    this.store.dispatch(
+      fromUserActions.loadUser({ id: this.id, params })
+    );
+
+    this.isLoadingRead$ = this.store.pipe(
+      select(selectIsLoadingRead)
+    );
+    this.error$ = this.store.pipe(
+      select(selectError)
+    );
+
+    this.store
+      .pipe(
+        select(selectUser, { id: this.id }),
+        filter(val => val !== undefined)
+      )
+      .subscribe((result) => {
+        this.setForm(result);
+      });
+  }
+
+  setForm(data: UserData) {
+    this.myForm.patchValue({
+      first_name: data.first_name,
+      last_name: data.last_name,
+      email: data.email,
+    });
+  }
+
   onSubmit() {
     const bodyUser = this.myForm.value;
 
     this.store.dispatch(
-      fromUserActions.createUser({
-        create: bodyUser
+      fromUserActions.updateUser({
+        id: this.id,
+        update: bodyUser
       })
     );
 
-    this.isLoadingCreate$ = this.store.pipe(
-      select(selectIsLoadingCreate)
+    this.isLoadingUpdate$ = this.store.pipe(
+      select(selectIsLoadingUpdate)
     );
     this.error$ = this.store.pipe(
       select(selectError)
     );
 
     this.actions$
-      .pipe(ofType(fromUserActions.createUserSuccess))
+      .pipe(ofType(fromUserActions.updateUserSuccess))
       .subscribe(() => {
         this.router.navigate(['']);
       });
